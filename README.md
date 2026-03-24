@@ -158,4 +158,4 @@ MIT
 
 ## Author
 
-Your Name - [GitHub](https://github.com/yourusername) - [LinkedIn](https://linkedin.com/in/yourprofile)
+Mickael Grivolat - [View Source Code](https://github.com/EndOfEntropy/Subscription-Service) - [LinkedIn](https://www.linkedin.com/in/micka%C3%ABlgrivolat)
