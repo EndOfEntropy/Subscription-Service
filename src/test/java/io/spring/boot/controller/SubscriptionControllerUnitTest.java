@@ -1,9 +1,9 @@
 package io.spring.boot.controller;
 
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -26,6 +26,7 @@ import org.springframework.test.web.servlet.ResultActions;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.stripe.model.Invoice;
+import com.stripe.model.PaymentIntent;
 
 import io.spring.boot.dto.SubscribeRequest;
 import io.spring.boot.entity.BillingCycle;
@@ -96,7 +97,9 @@ class SubscriptionControllerUnitTest {
         subscription.setId(200L);
 
         Invoice invoice = mock(Invoice.class);
-        when(invoice.getPaymentIntent()).thenReturn("pi_client_secret");
+        PaymentIntent mockPaymentIntent = mock(PaymentIntent.class);
+        when(mockPaymentIntent.getClientSecret()).thenReturn("pi_client_secret");
+        when(invoice.getPaymentIntentObject()).thenReturn(mockPaymentIntent);
 
         com.stripe.model.Subscription stripeSubscription = mock(com.stripe.model.Subscription.class);
         when(stripeSubscription.getLatestInvoiceObject()).thenReturn(invoice);

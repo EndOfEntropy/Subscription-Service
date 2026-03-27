@@ -79,6 +79,7 @@ class SubscriptionServiceUnitTest {
     	setup();
     	SubscriptionPlan paidPlan = new SubscriptionPlan(1L, "PREMIUM", new BigDecimal("9.99"), BillingCycle.MONTHLY,"All features");
         paidPlan.setStripePriceId("price_123");
+        com.stripe.model.Invoice mockInvoice = mock(com.stripe.model.Invoice.class);
 
         com.stripe.model.Subscription stripeSubscription = mock(com.stripe.model.Subscription.class);
         when(stripeSubscription.getId()).thenReturn("sub_123");
@@ -87,6 +88,8 @@ class SubscriptionServiceUnitTest {
         when(stripeService.createCustomer(any(), any())).thenReturn("cus_123");
         when(stripeService.createSubscription("cus_123", "price_123")).thenReturn(stripeSubscription);
         when(subscriptionRepository.save(any(Subscription.class))).thenAnswer(invocation -> invocation.getArgument(0));
+        when(mockInvoice.getPaymentIntent()).thenReturn("pi_123");
+        when(stripeSubscription.getLatestInvoiceObject()).thenReturn(mockInvoice);
         
         // when
         Subscription result = subscriptionService.createSubscription(user.getId(), paidPlan.getId());
